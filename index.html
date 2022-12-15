@@ -16,6 +16,8 @@
   outline: none;
   border: 2px solid #4433ff;
   background: #4433ff;
+  margin-left: auto;
+  margin-right: auto;
 }
 .css-button-sharp--sky:hover {
   background: #fff;
@@ -27,7 +29,7 @@
 <body>
 
 <button class="css-button-sharp--sky" id="ranyouvid" onclick="randomvid()">Next Video</button> <br /><br />
-</p><div id="randVid" style="font-size: large;"></div>
+</p><div id="randVid" style="font-size: large; margin: auto;"></div>
 <br />
   
 <div id="visitYoutube" style="font-size: large;"></div>
@@ -49,7 +51,7 @@ chanssRanVid = videoIdLists;
 
 pilihlinkRandVid = chanssRanVid[Math.floor(Math.random()*chanssRanVid.length)];
 
-document.getElementById('randVid').innerHTML = '<iframe id="player" width="560" height="315" src="https://www.youtube.com/embed/' + pilihlinkRandVid + '" frameborder="0" allowfullscreen></iframe>';
+document.getElementById('randVid').innerHTML = '<iframe id="player" width="auto" height="auto" src="https://www.youtube.com/embed/' + pilihlinkRandVid + '" frameborder="0" allowfullscreen></iframe>';
 document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtube.com/watch?v='+pilihlinkRandVid+'" target="_blank"><button class="css-button-sharp--sky">Watch on YouTube</button></a>';
 
   if (Math.random() < 1/2){
