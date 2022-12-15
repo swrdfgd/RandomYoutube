@@ -1,11 +1,32 @@
 <html>
 <head>
 <title>Random Youtube Video</title>
+  
+<style>
+  .css-button-sharp--sky {
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  outline: none;
+  border: 2px solid #4433ff;
+  background: #4433ff;
+}
+.css-button-sharp--sky:hover {
+  background: #fff;
+  color: #4433ff
+}
+</style>
 </head>
 
 <body>
 
-<button class="button large" id="ranyouvid" onclick="randomvid()">Next Video</button> <br /><br />
+<button class="css-button-sharp--sky" id="ranyouvid" onclick="randomvid()">Next Video</button> <br /><br />
 </p><div id="randVid" style="font-size: large;"></div>
 <br />
   
@@ -29,7 +50,7 @@ chanssRanVid = videoIdLists;
 pilihlinkRandVid = chanssRanVid[Math.floor(Math.random()*chanssRanVid.length)];
 
 document.getElementById('randVid').innerHTML = '<iframe id="player" width="560" height="315" src="https://www.youtube.com/embed/' + pilihlinkRandVid + '" frameborder="0" allowfullscreen></iframe>';
-document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtube.com/watch?v='+pilihlinkRandVid+'" target="_blank"><button>Watch on YouTube</button></a>';
+document.getElementById('visitYoutube').innerHTML = '<a  class="css-button-sharp--sky" href ="https://www.youtube.com/watch?v='+pilihlinkRandVid+'" target="_blank"><button>Watch on YouTube</button></a>';
 
   if (Math.random() < 1/2){
     refreshDaftar = Math.ceil(Math.random()*banyakList);
