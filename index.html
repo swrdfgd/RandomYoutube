@@ -60,28 +60,73 @@
 </script>
 
 <script>
+  daftarChannelAda =[];
+  var alphanel =['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z','0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_'];
+  var randomalphanel = 0; 
+  
+  function daftarkanvideowid(){
+    var i;
+    linkrandomyounelwid = '';
+ 
+    for(i = 0; i < 11; i++){
+      randomalphanel = Math.floor(Math.random()*(alphanel.length));
+      linkrandomyounelwid += alphanel[randomalphanel];
+    }
+    //linkrandomyounelwid = "WFmWCsOT6a0";
+    validVideoId(linkrandomyounelwid);
+  }
+
+  
+  function validVideoId(id) {
+    gambarr = new Image();
+    gambarr.src = "https://img.youtube.com/vi/" + id + "/mqdefault.jpg";
+    gambarr.onload = function () {
+      checkThumbnail(this.width);
+    }
+  }
+
+  function checkThumbnail(width) {
+    //HACK a mq thumbnail has width of 320.
+    //if the video does not exist(therefore thumbnail don't exist), a default thumbnail of 120 width is returned.
+    if (width === 120) {
+    }
+      else{daftarChannelAda.push(linkrandomyounelwid);}
+  }
+
+
+  daftarkanvideowid();
+  
+</script>
+
+<script>
 
 function randomvid(){
 
 
 chanssRanVid = videoIdLists;
+if (daftarChannelAda.length > 0){chanssRanVid = daftarChannelAda;}
  
 
 pilihlinkRandVid = chanssRanVid[Math.floor(Math.random()*chanssRanVid.length)];
+if (daftarChannelAda.length > 0){chanssRanVid[0];}
 
-document.getElementById('randVid').innerHTML = '<iframe id="player" src="https://www.youtube.com/embed/' + pilihlinkRandVid + '" frameborder="0" allowfullscreen></iframe>';
+document.getElementById('randVid').innerHTML = '<iframe id="player" width="560" height="315" src="https://www.youtube.com/embed/' + pilihlinkRandVid + '" frameborder="0" allowfullscreen></iframe>';
 document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtube.com/watch?v='+pilihlinkRandVid+'" target="_blank"><button class="css-button-sharp--sky">Watch on YouTube</button></a>';
 
   if (Math.random() < 1/2){
     refreshDaftar = Math.ceil(Math.random()*banyakList);
     $.getScript('https://cdn.jsdelivr.net/gh/swrdfgd/randYoutube/videoLists'+refreshDaftar+'.js');
   }
-
+  
+  daftarChannelAda.shift();
+  daftarkanvideowid();
 }
 
 randomvid();
 
 </script>
+
+
 </body>
 
 </html>
