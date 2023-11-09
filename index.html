@@ -1,5 +1,33 @@
 <html>
 <head>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' type='text/javascript'></script>
+  <script src="https://swrdfgd.github.io/RandomWords/englishword.js"></script>
+  <script src="https://swrdfgd.github.io/RandomWords/indoword.js"></script>
+  <script src="https://swrdfgd.github.io/RandomWords/characterInFont.js"></script>
+  
+ <script>
+ // KataGerman
+ kataGerman = [];
+ document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomWords/de/germanword'+Math.ceil(Math.random()*390)+'.js"></scr' + 'ipt>');
+ while(Math.random() < 1/2){
+	document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomWords/de/germanword'+Math.ceil(Math.random()*390)+'.js"></scr' + 'ipt>');
+ }
+ </script>
+<script>
+ punk = [];
+ piu = 0;
+ banyakDaftar = 10;
+ for (let i = 1; i < banyakDaftar+1; i++){
+   if (Math.random() < 1/2){
+    document.write('<scr' + 'ipt src=\"https://cdn.jsdelivr.net/gh/swrdfgd/PunkRecords/punk'+i+'.js\"></scr' + 'ipt>')
+    piu++;
+   }
+ }
+ if (piu == 0){
+  document.write('<scr' + 'ipt src=\"https://cdn.jsdelivr.net/gh/swrdfgd/PunkRecords/punk'+(1+Math.floor(Math.random()*banyakDaftar))+'.js\"></scr' + 'ipt>')
+  piu++;
+ }
+</script>
 <title>Random Youtube Video</title>
   
 <style>
@@ -100,15 +128,27 @@
 
 <script>
 
-function randomvid(){
+loaded = false;
 
+function randomvid(){
+if (Math.random() < 1/(punk.length) && loaded == true){refreshPage();}
+if (daftarChannelAda.length < 1/(1-Math.random())){cariVideo(false);}
+if (Math.random() < 1/10){randomtaxo(false);}
+loaded = true
 
 chanssRanVid = videoIdLists;
-if (daftarChannelAda.length > 0){chanssRanVid = daftarChannelAda;}
+
+channelAda = false
+if (daftarChannelAda.length > 0 && Math.random() < 1/2){chanssRanVid = daftarChannelAda; channelAda = true;}
  
 
 pilihlinkRandVid = chanssRanVid[Math.floor(Math.random()*chanssRanVid.length)];
-if (daftarChannelAda.length > 0){chanssRanVid[0];}
+
+if (channelAda == true){
+	daftarCAdaTerpilih = Math.floor(Math.random() * daftarChannelAda.length);
+	pilihlinkRandVid = chanssRanVid[daftarCAdaTerpilih];
+	daftarChannelAda.splice(daftarCAdaTerpilih, 1);
+}
 
 document.getElementById('randVid').innerHTML = '<iframe id="player" width="560" height="315" src="https://www.youtube.com/embed/' + pilihlinkRandVid + '" frameborder="0" allowfullscreen></iframe>';
 document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtube.com/watch?v='+pilihlinkRandVid+'" target="_blank"><button class="css-button-sharp--sky">Watch on YouTube</button></a>';
@@ -118,14 +158,413 @@ document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtu
     $.getScript('https://cdn.jsdelivr.net/gh/swrdfgd/randYoutube/videoLists'+refreshDaftar+'.js');
   }
   
-  daftarChannelAda.shift();
   daftarkanvideowid();
 }
 
-randomvid();
+
 
 </script>
 
+    <script>
+		daftarApi = ['AIzaSyBwwv3LrgSG3NcETgahW-3-_DyP74GwViA','AIzaSyB7TX3CfUSUBnWnNP9CGBjLzmfIeo6SpfM']       
+
+        function cariVideo(firstTime = true, nextPageToken = '', keyword = '', apiKey = '') {
+			if (apiKey ==''){apiKey = daftarApi[Math.floor(Math.random()*daftarApi.length)];}
+			if (keyword == ''){keyword = encodeURIComponent(document.getElementById("kata"+Math.floor(Math.random()*10)).innerHTML)};
+			let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${Math.ceil(Math.random()*50)}&q=${keyword}&key=${apiKey}`;
+			if (nextPageToken !== ''){url += `&pageToken=${nextPageToken}`;}
+			
+			console.log(url);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+					nextPageToken = data.nextPageToken;
+					if (nextPageToken !== null && Math.random() < 1/50){cariVideo(firstTime, nextPageToken, keyword, apiKey); return}
+                    const videoIds = [];
+                    
+                    data.items.forEach(item => {
+                        if (item.id.kind === 'youtube#video') {
+							videoIds.push(item.id.videoId);
+                        }
+                    });
+					
+					if (firstTime == true){randomvid()};
+                    const randomIndex = Math.floor(Math.random() * videoIds.length);
+                    const randomVideoId = videoIds[randomIndex];
+					daftarChannelAda.push(randomVideoId);
+
+                })
+                .catch(error => {
+					if (firstTime == true){randomvid()};
+                    console.error('Terjadi kesalahan:', error);
+                });
+        }
+
+ 
+    </script>
+	
+	  <div id="random-words" hidden></div>
+  <button id="refresh-button" onclick="refreshPage()" hidden>Refresh</button>
+
+  <script>
+    // Data frekuensi huruf dari kamus (dalam persentase)
+    const kamusFrequency = {
+       'A': 0.078,
+       'B': 0.02,
+       'C': 0.04,
+       'D': 0.038,
+       'E': 0.11,
+       'F': 0.014,
+       'G': 0.03,
+       'H': 0.023,
+       'I': 0.086,
+       'J': 0.0021,
+       'K': 0.0097,
+       'L': 0.053,
+       'M': 0.027,
+       'N': 0.072,
+       'O': 0.061,
+       'P': 0.028,
+       'Q': 0.0019,
+       'R': 0.073,
+       'S': 0.087,
+       'T': 0.067,
+       'U': 0.033,
+       'V': 0.01,
+       'W': 0.0091,
+       'X': 0.0027,
+       'Y': 0.016,
+       'Z': 0.0044
+    };
+    const kamusFrequencyIndonesia = {
+       'A': 0.2039,
+       'B': 0.0264,
+       'C': 0.0076,
+       'D': 0.0500,
+       'E': 0.0828,
+       'É': 0.0001,
+       'F': 0.0021,
+       'G': 0.0366,
+       'H': 0.0274,
+       'I': 0.0798,
+       'J': 0.0087,
+       'K': 0.0514,
+       'L': 0.0326,
+       'M': 0.0421,
+       'N': 0.0933,
+       'O': 0.0126,
+       'P': 0.0261,
+       'Q': 0.0001,
+       'R': 0.0464,
+       'S': 0.0415,
+       'T': 0.0558,
+       'U': 0.0462,
+       'V': 0.0018,
+       'W': 0.0048,
+       'X': 0.0003,
+       'Y': 0.0188,
+       'Z': 0.0004
+    };
+
+    // Fungsi untuk menghasilkan huruf acak berdasarkan peluang kemunculannya di kamus
+    function getRandomLetter(probabilities) {
+       const random = Math.random();
+       let cumulativeProbability = 0;
+
+       for (const char in probabilities) {
+          cumulativeProbability += probabilities[char];
+          if (random < cumulativeProbability) {
+             return char;
+          }
+       }
+
+       // Jika seluruh huruf telah diiterasi tetapi belum ada yang dipilih, pilih huruf terakhir sebagai default.
+       return Object.keys(probabilities)[Object.keys(probabilities).length - 1];
+    }
+
+    // Contoh penggunaan fungsi untuk menghasilkan huruf acak berdasarkan frekuensi kamus
+    const randomLetter = getRandomLetter(kamusFrequency);
+
+  
+  </script>
+
+  <script>
+  //random unicode string
+  function getRandomUnicodeCharacter(font = getComputedStyle(document.body).fontFamily) {
+  // Generate a random code point within the entire Unicode range (0x0000 to 0x10FFFF).
+  const codePoint = Math.floor(Math.random() * (0x10FFFF + 1));
+  
+  if(!characterIsSupported(String.fromCodePoint(codePoint),font)){return getRandomUnicodeCharacter(font);}
+  
+  // Convert the code point to a Unicode character.
+  return String.fromCodePoint(codePoint);
+  }
+
+  function getRandomLatinLetter() {
+    // Generate a random code point within the Unicode Latin Letters range (U+0041 to U+005A for uppercase letters, U+0061 to U+007A for lowercase letters).
+    const uppercaseCodePoint = Math.floor(Math.random() * (0x005A - 0x0041 + 1) + 0x0041);
+    const lowercaseCodePoint = Math.floor(Math.random() * (0x007A - 0x0061 + 1) + 0x0061);
+
+    // Randomly choose between uppercase and lowercase letters.
+    const codePoint = Math.random() < 0.5 ? uppercaseCodePoint : lowercaseCodePoint;
+
+    // Convert the code point to a Unicode character.
+    const character = String.fromCodePoint(codePoint);
+
+    return character;
+  }
+
+  </script>
+
+  <script>
+  //new Word
+  function getRandomWord(mode,font = getComputedStyle(document.body).fontFamily) {
+   if (mode == 0){
+      //mode full acak
+      var panjangKata = 5;
+      while (Math.random() < 1/2){panjangKata++;}
+      panjangKata = Math.ceil(Math.random()*panjangKata);
+      var kataBaru = '';
+      for (j = 0; j < panjangKata; j++){kataBaru += getRandomUnicodeCharacter(font);}
+      return kataBaru;
+   }
+
+   if (mode == 1){
+      //mode hurufLatin
+      var panjangKata = 5;
+      while (Math.random() < 1/2){panjangKata++;}
+      panjangKata = Math.ceil(Math.random()*panjangKata);
+      var kataBaru = '';
+      for (j = 0; j < panjangKata; j++){kataBaru += getRandomLatinLetter();}
+      return kataBaru;
+   }
+
+   if (mode == 2){
+      //mode hurufLatinSesuaiFrekuensi
+      var panjangKata = 5;
+      while (Math.random() < 1/2){panjangKata++;}
+      panjangKata = Math.ceil(Math.random()*panjangKata);
+      var kataBaru = '';
+      for (j = 0; j < panjangKata; j++){kataBaru += getRandomLetter(kamusFrequency);}
+      if (Math.random() < 1/2){
+         kataBaru = kataBaru.toLowerCase();
+         if (Math.random() < 1/2){
+            kataBaru = kataBaru.charAt(0).toUpperCase() + kataBaru.slice(1)
+         }
+      }
+      return kataBaru;
+   }
+
+   if (mode == 3){
+      //mode hurufLatinSesuaiFrekuensi
+      var panjangKata = 5;
+      while (Math.random() < 1/2){panjangKata++;}
+      panjangKata = Math.ceil(Math.random()*panjangKata);
+      var kataBaru = '';
+      for (j = 0; j < panjangKata; j++){kataBaru += getRandomLetter(kamusFrequencyIndonesia);}
+      if (Math.random() < 1/2){
+         kataBaru = kataBaru.toLowerCase();
+         if (Math.random() < 1/2){
+            kataBaru = kataBaru.charAt(0).toUpperCase() + kataBaru.slice(1)
+         }
+      }
+      return kataBaru;
+   }
+
+   if (mode == 4){
+      //mode kataIndo
+      var kataBaru = kataIndo[Math.floor(Math.random()*kataIndo.length)];
+      if (Math.random() < 1/2){
+         kataBaru = kataBaru.toUpperCase();
+      }
+      else if (Math.random() < 1/2){
+         kataBaru = kataBaru.charAt(0).toUpperCase() + kataBaru.slice(1)
+      }
+      return kataBaru;
+   }
+
+   if (mode == 5){
+      //mode kataInggris
+
+      var kataBaru = kataEnglish[Math.floor(Math.random()*kataEnglish.length)];
+      if (Math.random() < 1/2){
+         kataBaru = kataBaru.toUpperCase();
+      }
+      else if (Math.random() < 1/2){
+         kataBaru = kataBaru.charAt(0).toUpperCase() + kataBaru.slice(1)
+      }
+      return kataBaru;
+   }
+
+  }
+  </script>
+
+  <script>
+    // Array of random words
+    var words = [
+    ];
+
+    for (var i = 0; i < 12; i++){
+      words.push(getRandomWord(Math.floor(Math.random()*6)));
+    }
+
+    function generateRandomWords() {
+      const randomWords = [];
+      urutanKata = 0;
+      while (randomWords.length < 10) {
+        const randomIndex = Math.floor(Math.random() * words.length);
+        const word = words[randomIndex];
+        if (!randomWords.includes(word)) {
+          randomWords.push(word);
+        }
+      }
+
+      const randomWordsElement = document.getElementById("random-words");
+      randomWordsElement.innerHTML = ""; // Clear previous words
+      randomWords.forEach(word => {
+        const wordElement = document.createElement("div");
+        wordElement.className = "word";
+        wordElement.textContent = word;
+        wordElement.id = "kata"+urutanKata; urutanKata++;
+        randomWordsElement.appendChild(wordElement);
+      });
+    }
+
+    function refreshPage() {
+      location.reload(); // Reload the page
+    }
+
+    generateRandomWords(); // Generate random words on page load
+  </script>
+
+<script>
+function randomtaxo2(firstTime = true){
+
+daftarwiki = ["en.wikipedia.org", "id.wikipedia.org"]
+pilihwiki = daftarwiki[Math.floor(Math.random()*daftarwiki.length)];
+var url = "https://"+pilihwiki+"/w/api.php"; 
+
+var params = {
+    action: "query",
+    format: "json",
+    list: "random",
+    rnlimit: "5",
+    rnnamespace: "0"
+};
+
+url = url + "?origin=*";
+Object.keys(params).forEach(function(key){url += "&" + key + "=" + params[key];});
+
+fetch(url)
+    .then(function(response){return response.json();})
+    .then(function(response) {
+        randoms = response.query.random;
+        katake = Math.floor(Math.random()*10);
+document.getElementById("kata"+katake).innerHTML = randoms[0].title;
+		cariVideo(firstTime);
+    })
+    .catch(function(error){cariVideo(firstTime);});
+
+
+
+
+}
+</script>
+
+<script>
+
+function randomtaxo(firstTime = true){
+
+pilihwiki = punk[Math.floor(Math.random()*punk.length)][0];
+pilihwiki = pilihwiki.split('http:').join('https:');
+
+var url = pilihwiki+"api.php"; 
+
+var params = {
+    action: "query",
+    format: "json",
+    list: "random",
+    rnlimit: "5",
+    rnnamespace: "0"
+};
+
+url = url + "?origin=*";
+Object.keys(params).forEach(function(key){url += "&" + key + "=" + params[key];});
+
+fetch(url)
+    .then(function(response){return response.json();})
+    .then(function(response) {
+        randoms = response.query.random;
+        //for (var r in randoms) {
+        //    console.log(randoms[r].title);
+        //}
+        katake = Math.floor(Math.random()*10);
+        document.getElementById("kata"+katake).innerHTML = randoms[0].title;
+        randomtaxo2(firstTime);
+    })
+    .catch(function(error){randomtaxo2(firstTime);});
+
+
+
+
+}
+randomtaxo();
+
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script>
+//random font https://codepen.io/akobashikawa/pen/rZRrQN
+const API_KEY = 'AIzaSyBTPAz_OQr140D1rtD0o6vwM63XohXw8Ds';
+daftarFont = {};
+let fontsList = [];
+const el = document.querySelector("#quote");
+async function loadFontsList() {
+    try {
+        const result = await fetch('https://www.googleapis.com/webfonts/v1/webfonts?key=' + API_KEY);
+        const data = await result.json();
+        //console.log('loaded google fonts list: ', data.items.length);
+        return data.items;
+    } catch (error) {
+        console.log('loadFontsList', error, error.message);
+    }
+}
+function loadRandomFont(fontsList) {
+    const randomIndex = Math.floor(Math.random() * fontsList.length);
+    const choosedFont = fontsList[randomIndex].family;
+    WebFont.load({
+        google: {
+            families: [choosedFont]
+        }
+    });
+    //console.log('choosed font: ', choosedFont);
+    return choosedFont;
+}
+
+function updateFont(n,el = document.querySelector("#quote"), choosedFont = loadRandomFont(fontsList)) {
+    el.style.fontFamily = choosedFont;
+    el.setAttribute('title', choosedFont);
+	daftarFont[n] = choosedFont;
+	if (n == 9){
+		katakers = Math.floor(Math.random()*10);
+		document.getElementById("kata"+katakers).innerHTML = getRandomWord(0,daftarFont[katakers]);
+		//console.log("katakers = " + katakers);
+	}
+}
+
+async function main() {
+    fontsList = await loadFontsList();
+    const choosedFont = loadRandomFont(fontsList);
+	for (let i = 0; i < 10; i++){
+		updateFont(i,document.querySelector("#kata"+i));
+	}
+    //updateFont(el, choosedFont);
+    //el.style.visibility = "visible";
+}
+main();
+</script>	
 
 </body>
 
