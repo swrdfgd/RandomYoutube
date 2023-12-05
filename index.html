@@ -219,7 +219,7 @@ document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtu
 		function videoTop(firstTime = true, nextPageToken = '', idChannel = '', apiKey = '') {
 		
 			if (Math.random() < 1/2){
-				document.write('<scr' + 'ipt src=\"https://cdn.jsdelivr.net/gh/swrdfgd/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js\"></scr' + 'ipt>')
+				$.getScript('https://cdn.jsdelivr.net/gh/swrdfgd/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js');
 			}
 		
 			if (apiKey ==''){apiKey = daftarApi[Math.floor(Math.random()*daftarApi.length)];}
@@ -490,7 +490,8 @@ document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtu
       location.reload(); // Reload the page
     }
 
-    generateRandomWords(); // Generate random words on page load
+  // Generate random words on page load
+  generateRandomWords();
   </script>
 
 <script>
@@ -565,6 +566,7 @@ fetch(url)
 
 
 }
+
 randomtaxo();
 
 </script>
