@@ -13,6 +13,9 @@
 	document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomWords/de/germanword'+Math.ceil(Math.random()*390)+'.js"></scr' + 'ipt>');
  }
  </script>
+ <script>
+	document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js"></scr' + 'ipt>');
+ </script>
 <script>
  punk = [];
  piu = 0;
@@ -133,6 +136,7 @@ loaded = false;
 function randomvid(){
 if (Math.random() < 1/(punk.length) && loaded == true){refreshPage();}
 if (daftarChannelAda.length < 1/(1-Math.random())){cariVideo(false);}
+if (daftarChannelAda.length < 1/(1-Math.random())){videoTop(false);}
 if (Math.random() < 1/10){randomtaxo(false);}
 loaded = true
 
@@ -170,7 +174,13 @@ document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtu
 
         function cariVideo(firstTime = true, nextPageToken = '', keyword = '', apiKey = '') {
 			if (apiKey ==''){apiKey = daftarApi[Math.floor(Math.random()*daftarApi.length)];}
-			if (keyword == ''){keyword = encodeURIComponent(document.getElementById("kata"+Math.floor(Math.random()*10)).innerHTML)};
+			if (keyword == ''){
+				keyword = document.getElementById("kata"+Math.floor(Math.random()*10)).innerHTML;
+				while (Math.random() < 1/2){
+					keyword += ' ' + document.getElementById("kata"+Math.floor(Math.random()*10)).innerHTML;
+				}
+				keyword = encodeURIComponent(keyword);
+			};
 			let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=${Math.ceil(Math.random()*50)}&q=${keyword}&key=${apiKey}`;
 			if (nextPageToken !== ''){url += `&pageToken=${nextPageToken}`;}
 			
@@ -202,6 +212,52 @@ document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtu
 
  
     </script>
+	
+	<script>
+		//video dari channel top
+		
+		function videoTop(firstTime = true, nextPageToken = '', idChannel = '', apiKey = '') {
+		
+			if (Math.random() < 1/2){
+				document.write('<scr' + 'ipt src=\"https://cdn.jsdelivr.net/gh/swrdfgd/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js\"></scr' + 'ipt>')
+			}
+		
+			if (apiKey ==''){apiKey = daftarApi[Math.floor(Math.random()*daftarApi.length)];}
+			if (idChannel == ''){
+				idChannel = daftarChannel[Math.floor(Math.random()*daftarChannel.length)];
+			};
+			let url = `https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${'UU'+idChannel}&part=snippet&key=${apiKey}&maxResults=${Math.ceil(Math.random()*50)}`;
+			if (nextPageToken !== ''){url += `&pageToken=${nextPageToken}`;}
+			
+			console.log(url);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+					nextPageToken = data.nextPageToken;
+					if (nextPageToken !== null && Math.random() < 1/50){videoTop(firstTime, nextPageToken, idChannel, apiKey); return}
+                    const videoIds = [];
+                    
+                    data.items.forEach(item => {
+                        if (item.snippet.resourceId.kind === 'youtube#video') {
+							videoIds.push(item.snippet.resourceId.videoId);
+                        }
+                    });
+					
+					if (firstTime == true){randomvid()};
+                    const randomIndex = Math.floor(Math.random() * videoIds.length);
+                    const randomVideoId = videoIds[randomIndex];
+					daftarChannelAda.push(randomVideoId);
+
+                })
+                .catch(error => {
+					if (firstTime == true){randomvid()};
+                    console.error('Terjadi kesalahan:', error);
+                });
+        }
+
+ 
+    
+	</script>
 	
 	  <div id="random-words" hidden></div>
   <button id="refresh-button" onclick="refreshPage()" hidden>Refresh</button>
@@ -462,8 +518,9 @@ fetch(url)
         katake = Math.floor(Math.random()*10);
 document.getElementById("kata"+katake).innerHTML = randoms[0].title;
 		cariVideo(firstTime);
+		videoTop(firstTime);
     })
-    .catch(function(error){cariVideo(firstTime);});
+    .catch(function(error){cariVideo(firstTime);videoTop(firstTime);});
 
 
 
