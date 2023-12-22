@@ -14,7 +14,16 @@
  }
  </script>
  <script>
-	document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js"></scr' + 'ipt>');
+	listDaftar = ['daftarChannel', 'SciAndTech'];
+	pilihanList = listDaftar[Math.floor(Math.random()*listDaftar.length)];
+	switch(pilihanList){
+		case 'daftarChannel':
+			document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js"></scr' + 'ipt>');
+			break;
+		case 'SciAndTech':
+			document.write('<scr' + 'ipt src="https://swrdfgd.github.io/RandomYoutube/SciAndTech'+Math.ceil(Math.random()*10)+'.js"></scr' + 'ipt>');
+			break;
+	}
  </script>
 <script>
  punk = [];
@@ -219,7 +228,15 @@ document.getElementById('visitYoutube').innerHTML = '<a href ="https://www.youtu
 		function videoTop(firstTime = true, nextPageToken = '', idChannel = '', apiKey = '') {
 		
 			if (Math.random() < 1/2){
-				$.getScript('https://cdn.jsdelivr.net/gh/swrdfgd/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js');
+				pilihanList = listDaftar[Math.floor(Math.random()*listDaftar.length)];
+				switch(pilihanList){
+					case 'daftarChannel':
+						$.getScript('https://cdn.jsdelivr.net/gh/swrdfgd/RandomYoutube/daftarChannel'+Math.ceil(Math.random()*20)+'.js');
+						break;
+					case 'SciAndTech':
+						$.getScript('https://cdn.jsdelivr.net/gh/swrdfgd/RandomYoutube/SciAndTech'+Math.ceil(Math.random()*10)+'.js');
+						break;
+				}
 			}
 		
 			if (apiKey ==''){apiKey = daftarApi[Math.floor(Math.random()*daftarApi.length)];}
